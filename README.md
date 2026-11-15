@@ -4,6 +4,8 @@ A responsive React assessment application for choosing aircraft seats and option
 
 Repository: [Abhinav-abhi345/flight-seat-selection](https://github.com/Abhinav-abhi345/flight-seat-selection)
 
+Live demo: [flight-seat-selection-six.vercel.app](https://flight-seat-selection-six.vercel.app)
+
 ## Run locally on Windows
 
 Install a current Node.js LTS release compatible with Vite and ESLint, then open PowerShell in the project folder:
@@ -93,13 +95,14 @@ public/
 - Headless Chrome was run against the production build, exercising passenger counts, keyboard dropdown interaction, seat/meal assignment and removal, duplicate rejection, cabin changes and free-seat completion.
 - Responsive checks passed at 320, 375, 768, 1024, 1280 and 1440px with no page-level horizontal overflow. Wide cabins scroll inside their panel. Touch selection was checked at 390px.
 - The final browser flow reported no console errors, JavaScript page errors or failed HTTP resources.
+- The same complete browser flow passed against the public Vercel production URL after deployment, including anonymous access, all six viewport widths and mobile touch selection.
 - Automated WCAG 2 A/AA and 2.1 AA accessibility checks were run for the initial screen, open dropdown, selected seat/meal state and mobile cabin. Automated checks complement the keyboard and visual review; they do not establish complete accessibility conformance.
 
 Browser automation and accessibility tooling were installed temporarily outside the repository, so they add no application dependencies. The reproducible business tests are included in `src/utils/*.test.js`. Cross-browser testing beyond Chrome is not claimed.
 
 ## Vercel deployment
 
-Vercel supports Vite's default static build. Import this repository into Vercel and use:
+The application is deployed to Vercel with the Vite framework preset. It uses:
 
 | Setting | Value |
 | --- | --- |
@@ -112,7 +115,13 @@ Vercel supports Vite's default static build. Import this repository into Vercel 
 
 No client-side routes or server functions are used, so additional rewrites and backend configuration are unnecessary. See [Vercel's Vite documentation](https://vercel.com/docs/frameworks/frontend/vite).
 
-Deployment requires an authenticated Vercel account. The production URL will be recorded after a successful deployment.
+The production URL is https://flight-seat-selection-six.vercel.app and is accessible without signing in. To deploy future local changes from an authenticated Vercel CLI session:
+
+```powershell
+npm.cmd exec --yes --package=vercel@latest -- vercel deploy --prod --yes --project flight-seat-selection
+```
+
+The current deployment was made through the CLI. Automatic deployments from GitHub require configuring the repository connection in Vercel.
 
 ## Scope and limitations
 
