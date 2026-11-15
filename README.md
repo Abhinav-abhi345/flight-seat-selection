@@ -26,6 +26,14 @@ npm.cmd run preview
 
 `build` creates the production assets in `dist`. `preview` serves that build locally. The project uses React, Vite, JavaScript, Tailwind CSS, Lucide React and Node's built-in test runner. No state-management or component libraries are required.
 
+Before pushing changes, run the complete deployment checks:
+
+```powershell
+npm.cmd run verify
+```
+
+This runs ESLint, all business-logic tests, then the production build. It stops at the first failed step.
+
 ## Features
 
 - Select 1–9 passengers, with generated identifiers and one active passenger.
@@ -109,11 +117,11 @@ The application is deployed to Vercel with the Vite framework preset. It uses:
 | Framework preset | Vite |
 | Root directory | Repository root |
 | Install command | `npm ci` |
-| Build command | `npm run build` |
+| Build command | `npm run verify` |
 | Output directory | `dist` |
 | Environment variables | None |
 
-No client-side routes or server functions are used, so additional rewrites and backend configuration are unnecessary. See [Vercel's Vite documentation](https://vercel.com/docs/frameworks/frontend/vite).
+The tracked `vercel.json` enforces `npm ci` and `npm run verify` for Vercel builds. A lint, test, install or build failure prevents that deployment from publishing; the previous successful production deployment remains live. No client-side routes or server functions are used, so additional rewrites and backend configuration are unnecessary. See [Vercel's Vite documentation](https://vercel.com/docs/frameworks/frontend/vite).
 
 The production URL is https://flight-seat-selection-six.vercel.app and is accessible without signing in. To deploy future local changes from an authenticated Vercel CLI session:
 
@@ -122,6 +130,14 @@ npm.cmd exec --yes --package=vercel@latest -- vercel deploy --prod --yes --proje
 ```
 
 The GitHub repository is connected to Vercel with automatic deployments enabled. Pushes to the production branch `main` trigger a production deployment and update the live site. The CLI command above remains available for manual deployments.
+
+## Automatic quality checks
+
+`.github/workflows/quality-checks.yml` runs `npm ci` and `npm run verify` on pushes and pull requests. It can also be started manually from the GitHub Actions tab. CI uses Node.js 26 to match the current Vercel runtime.
+
+GitHub Actions provides a visible check before merging. Vercel independently runs the same lint/test/build gate, so deployment protection does not depend on the GitHub workflow finishing first. To block merges as well, a repository ruleset can require the Lint, tests and build check on pull requests.
+
+If a check fails, open GitHub Actions or the Vercel build logs, fix the reported issue, run `npm.cmd run verify` locally, then commit and push the fix. These checks cover code quality, existing business-logic tests and compilation; they do not guarantee that every possible browser interaction or production-only issue is detected. Browser testing is documented separately under Verification.
 
 ## Scope and limitations
 
