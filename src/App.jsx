@@ -1,4 +1,5 @@
 import { getSeatLookup } from './utils/seatHelpers'
+import { calculateSeatPricing } from './utils/priceCalculator'
 import Header from './components/layout/Header'
 import FlightInfo from './components/layout/FlightInfo'
 import BookingProgress from './components/layout/BookingProgress'
@@ -23,13 +24,14 @@ export default function App() {
   } = usePassengers()
   const layout = aircraftLayouts[layoutId]
   const seatsById = getSeatLookup(layout)
+  const pricing = calculateSeatPricing(passengers, seatsById)
 
   return (
     <>
       <a href="#main-content" className="skip-link">Skip to seat selection</a>
       <Header />
       <main id="main-content" className="mx-auto max-w-[1440px] px-4 pb-12 sm:px-6 lg:px-10">
-        <BookingProgress />
+        <BookingProgress isComplete={pricing.selectedCount === passengers.length} />
         <div className="mb-7">
           <p className="eyebrow mb-2">MAKE YOURSELF AT HOME</p>
           <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
@@ -57,7 +59,7 @@ export default function App() {
             onSeatRemove={removeSeat}
             feedback={feedback}
           />
-          <BookingSummary passengers={passengers} seatsById={seatsById} onSeatRemove={removeSeat} />
+          <BookingSummary passengers={passengers} seatsById={seatsById} onSeatRemove={removeSeat} pricing={pricing} />
         </div>
         <p className="mt-7 text-center text-xs leading-5 text-slate-500">
           A mock flight experience. No payment or actual reservation is made.

@@ -4,9 +4,9 @@ React and JavaScript frontend for the flight seat selection assessment.
 
 ## Current progress
 
-Phase 5: seat assignment. Includes the responsive airline interface, both aircraft layouts, passenger management, seat assignment/reassignment/removal, duplicate prevention, and safe cabin changes.
+Phase 6: seat pricing. Includes the responsive airline interface, both aircraft layouts, passenger management, validated seat assignments, safe cabin changes, and a derived category-by-category price breakdown.
 
-Seat selections and their charges now update together. Phase 6 will expand and verify the pricing breakdown. Meals, persistence, and final UI refinement follow mandatory features. The review button is still a disabled presentation placeholder; it does not perform a reservation.
+Mandatory seat-selection and pricing functionality is implemented. Bonus meals, optional persistence, and final browser/deployment checks remain. This is a mock seat-selection experience: it does not perform a reservation or collect payment.
 
 ## Stack
 
@@ -53,7 +53,7 @@ npm.cmd run preview
 - `src/utils/passengerHelpers.js`: pure passenger initialization and reducer logic, covered by Node tests.
 - `src/utils/seatSelection.js`: assignment, removal, and cabin-change transitions.
 - `src/utils/validation.js`: latest-state validation of assignment attempts.
-- `src/utils/priceCalculator.js`: seat price lookup and shared Indian rupee formatting.
+- `src/utils/priceCalculator.js`: derived pricing lines, selection count, total charges, seat price lookup, and Indian rupee formatting.
 
 Empty directories may not appear in Git until implementation adds files.
 
@@ -110,7 +110,22 @@ No dependencies were added for Phase 4.
 - Available seats have a 44px minimum size, accessible labels including their category and price, and keyboard focus styles. Enter and Space activate native seat buttons.
 - Basic charges are derived from current assignments, including ₹0 seats. This was connected alongside assignment functionality to avoid displaying stale placeholder totals.
 
-No dependencies were added for Phase 5. Automated checks now include 19 tests.
+No dependencies were added for Phase 5. That phase's automated checks covered 19 tests.
+
+## Phase 6 implementation and verification
+
+- `calculateSeatPricing` builds a fresh breakdown from the current passenger assignments and seat catalogue. It returns selected-seat count, category quantities/subtotals, and total seat charges.
+- Category prices are defined once in `src/data/seats.js`: Standard ₹0, Premium ₹250, and Extra legroom ₹350. Seat labels, details, passenger prices, the legend, and summary use that data.
+- Choose 1A, 2A, and 5C for three passengers in the 3–2 cabin. Expect one Extra legroom seat at ₹350, one Premium seat at ₹250, one Standard seat at ₹0, and total ₹600.
+- Change 1A to another free seat: total becomes ₹250. Remove the Premium assignment: total becomes ₹0, and the selected count decreases.
+- Choose free seats for every passenger: total stays ₹0, all seats count as selected, the progress indicator advances to Seat summary, and a completion message appears.
+- Category lines display quantity × unit price and subtotal. Free seats show both ₹0 and a Free label; unassigned passengers show Not selected yet.
+- Reducing passenger count and switching cabins recalculate the breakdown immediately using only retained assignments. Missing and occupied seats do not count toward completion or totals.
+- The total is an accessible live output. Prices use the en-IN number format and Indian rupee symbol. Airfare is explicitly excluded from the displayed seat charges.
+- The inactive Review placeholder was removed. Selection completion is shown as a status; no checkout or actual booking is implied.
+- There is no separate total state, synchronization effect, or pricing dependency. This small pure calculation runs during rendering, so a dedicated hook or memoization would add unnecessary indirection.
+
+No dependencies were added for Phase 6. Automated checks now include 26 tests. Browser appearance, keyboard interactions, responsive behavior, and browser console checks still require final manual verification.
 
 ## State management
 

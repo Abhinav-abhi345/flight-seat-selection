@@ -3,7 +3,7 @@ import test from 'node:test'
 import { createPassengerState, passengerReducer } from './passengerHelpers.js'
 import { aircraftLayouts } from '../data/aircraftLayouts.js'
 import { getSeatLookup } from './seatHelpers.js'
-import { getSeatPrice } from './priceCalculator.js'
+import { calculateSeatPricing } from './priceCalculator.js'
 
 function chooseSeat(state, seatId) {
   return passengerReducer(state, { type: 'assignSeat', seatId, layoutId: state.layoutId })
@@ -108,7 +108,7 @@ test('reducing passenger count releases removed assignments without altering ret
 
 test('displayed charges reflect paid, free, changed and removed seats from current assignments', () => {
   const seats = getSeatLookup(aircraftLayouts['3-2'])
-  const total = (state) => state.passengers.reduce((amount, passenger) => amount + getSeatPrice(seats[passenger.seatId]), 0)
+  const total = (state) => calculateSeatPricing(state.passengers, seats).seatTotal
   let state = chooseSeat(createPassengerState(), '1A')
   assert.equal(total(state), 350)
   state = chooseSeat(state, '2A')

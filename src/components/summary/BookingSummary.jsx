@@ -1,11 +1,10 @@
-import { ArrowRight, Ticket } from 'lucide-react'
+import { ArrowRight, CircleCheck, Ticket } from 'lucide-react'
 import PassengerSummary from './PassengerSummary'
 import PriceBreakdown from './PriceBreakdown'
-import { getSeatPrice } from '../../utils/priceCalculator'
 
-export default function BookingSummary({ passengers, seatsById, onSeatRemove }) {
-  const selectedCount = passengers.filter((passenger) => passenger.seatId).length
-  const seatTotal = passengers.reduce((total, passenger) => total + getSeatPrice(seatsById[passenger.seatId]), 0)
+export default function BookingSummary({ passengers, seatsById, onSeatRemove, pricing }) {
+  const { selectedCount } = pricing
+  const isComplete = selectedCount === passengers.length
 
   return (
     <aside aria-labelledby="summary-heading" className="panel p-5 lg:col-span-2 xl:sticky xl:top-6 xl:col-span-1">
@@ -24,14 +23,15 @@ export default function BookingSummary({ passengers, seatsById, onSeatRemove }) 
       <ul className="mt-1 divide-y divide-slate-100">
         {passengers.map((passenger) => <PassengerSummary key={passenger.id} passenger={passenger} seat={seatsById[passenger.seatId]} onSeatRemove={onSeatRemove} />)}
       </ul>
-      <div className="pt-3"><PriceBreakdown seatTotal={seatTotal} /></div>
-      <p className="mt-5 rounded-lg border border-dashed border-slate-200 px-3 py-3 text-center text-xs leading-5 text-slate-500">
-        {selectedCount === 0 ? 'Your selected seats and charges will appear here.' : selectedCount === passengers.length ? 'Everyone has a seat. You can still change your selections.' : `${passengers.length - selectedCount} more seat${passengers.length - selectedCount === 1 ? '' : 's'} to choose.`}
-      </p>
-      <button type="button" disabled className="mt-4 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-500 disabled:cursor-not-allowed" aria-describedby="review-hint">
-        Review selections <ArrowRight size={16} aria-hidden="true" />
-      </button>
-      <p id="review-hint" className="mt-2.5 text-center text-[11px] leading-5 text-slate-500">{selectedCount === passengers.length ? 'Your selections are saved for this session.' : 'Choose a seat for each passenger.'}</p>
+      <div className="pt-3"><PriceBreakdown pricing={pricing} /></div>
+      <div role="status" className={`mt-5 rounded-xl px-4 py-3 text-center text-xs leading-5 ${isComplete ? 'bg-teal-50 text-teal-900' : 'border border-dashed border-slate-200 text-slate-500'}`}>
+        {isComplete ? (
+          <>
+            <p className="flex items-center justify-center gap-2 font-semibold"><CircleCheck size={16} aria-hidden="true" />All seats selected</p>
+            <p className="mt-1">You can change or remove seats at any time.</p>
+          </>
+        ) : selectedCount === 0 ? 'Choose a seat for each passenger to complete your selection.' : `${passengers.length - selectedCount} more seat${passengers.length - selectedCount === 1 ? '' : 's'} to choose.`}
+      </div>
     </aside>
   )
 }
