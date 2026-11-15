@@ -121,7 +121,7 @@ The production URL is https://flight-seat-selection-six.vercel.app and is access
 npm.cmd exec --yes --package=vercel@latest -- vercel deploy --prod --yes --project flight-seat-selection
 ```
 
-The current deployment was made through the CLI. Automatic deployments from GitHub require configuring the repository connection in Vercel.
+The GitHub repository is connected to Vercel with automatic deployments enabled. Pushes to the production branch `main` trigger a production deployment and update the live site. The CLI command above remains available for manual deployments.
 
 ## Scope and limitations
 
