@@ -2,7 +2,7 @@
 
 A responsive React assessment application for choosing aircraft seats and optional meals for multiple passengers. All flight, seat and meal data is mocked; no backend, payment or actual reservation is involved.
 
-Repository: [Abhinav-abhi345/flight-seat-selection](https://github.com/Abhinav-abhi345/flight-seat-selection) (private).
+Repository: [Abhinav-abhi345/flight-seat-selection](https://github.com/Abhinav-abhi345/flight-seat-selection)
 
 ## Run locally on Windows
 
