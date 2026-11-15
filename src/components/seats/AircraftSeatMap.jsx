@@ -33,7 +33,7 @@ export default function AircraftSeatMap({ layout, onLayoutChange, activePassenge
         <div role="status" className="mx-auto flex w-fit items-center gap-2 rounded-full bg-teal-50 px-4 py-2 text-xs font-medium text-teal-900">
           <Armchair size={14} aria-hidden="true" /> Choosing for {activePassenger.name}
         </div>
-        <p role="status" className="mt-3 text-center text-xs text-slate-500">{layout.description} · {layout.rowCount} rows</p>
+        {/* <p role="status" className="mt-3 text-center text-xs text-slate-500">{layout.description} · {layout.rowCount} rows</p> */}
         <p className="mt-2 text-center text-[11px] leading-5 text-slate-500">Changing cabins keeps available seats and clears unavailable selections.</p>
         <SeatDetails passenger={activePassenger} seat={activeSeat} onRemove={onSeatRemove} />
         <div role="region" aria-label={`${layout.label} seat map, scroll horizontally if needed`} tabIndex={0} className="mt-6 overflow-x-auto rounded-xl pb-2">

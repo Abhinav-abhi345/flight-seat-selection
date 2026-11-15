@@ -89,6 +89,7 @@ Assignment policy, implemented in Phase 5: retain an assignment only if the same
 ## Phase 4 implementation and verification
 
 - Change the passenger count from 1 to 9 using the labelled dropdown. The initial count is 3; the upper limit is a mock booking policy defined in `src/data/passengers.js`.
+- The passenger-count dropdown uses a styled select-only combobox. Use Enter/Space to open, arrow keys or Home/End to navigate, Enter/Space to select, and Escape or Tab to dismiss without changing the count. Number keys highlight the matching option; clicking outside closes the list.
 - All panels receive the same passenger list. Profiles and summary rows update together.
 - Click a passenger card or focus it with Tab and press Enter or Space. Exactly one card is active, and the cabin's “Choosing for” label updates immediately.
 - Increasing the count preserves existing profiles and the active passenger. New passengers start without a seat.
