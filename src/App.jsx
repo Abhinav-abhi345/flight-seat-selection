@@ -67,7 +67,7 @@ export default function App() {
           </div>
           <BookingSummary passengers={passengers} seatsById={seatsById} onSeatRemove={removeSeat} onMealRemove={removeMeal} pricing={pricing} />
         </div>
-        <p className="mt-7 text-center text-xs leading-5 text-slate-500">
+        <p className="mt-7 text-center text-xs leading-5 text-slate-600">
           A mock flight experience. No payment or actual reservation is made.
         </p>
       </main>

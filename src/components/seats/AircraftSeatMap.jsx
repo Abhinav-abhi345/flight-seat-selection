@@ -38,10 +38,10 @@ export default function AircraftSeatMap({ layout, onLayoutChange, activePassenge
         <SeatDetails passenger={activePassenger} seat={activeSeat} onRemove={onSeatRemove} />
         <div role="region" aria-label={`${layout.label} seat map, scroll horizontally if needed`} tabIndex={0} className="mt-6 overflow-x-auto rounded-xl pb-2">
           <div className="aircraft-cabin mx-auto w-max border border-slate-200 bg-slate-50/50 px-3 pt-7 pb-6 sm:px-6">
-            <div className="mb-6 flex items-center justify-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+            <div className="mb-6 flex items-center justify-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-600">
               <MoveUp size={13} aria-hidden="true" /> Front of aircraft
             </div>
-            <div aria-hidden="true" style={gridStyle} className="seat-row mb-3 text-center text-[11px] font-medium text-slate-400">
+            <div aria-hidden="true" style={gridStyle} className="seat-row mb-3 text-center text-[11px] font-medium text-slate-600">
               <span />
               {layout.groups.map((group, groupIndex) => (
                 <Fragment key={group.join('')}>
@@ -53,7 +53,7 @@ export default function AircraftSeatMap({ layout, onLayoutChange, activePassenge
             <ol aria-label="Aircraft seat rows" className="space-y-2.5">
               {seatRows.map((row) => (
                 <li key={row.number} aria-label={`Row ${row.number}`} style={gridStyle} className="seat-row">
-                  <span aria-hidden="true" className="text-center text-[11px] text-slate-400">{row.number}</span>
+                  <span aria-hidden="true" className="text-center text-[11px] text-slate-600">{row.number}</span>
                   {row.groups.map((group, groupIndex) => (
                     <Fragment key={layout.groups[groupIndex].join('')}>
                       {groupIndex > 0 && <span aria-hidden="true" />}

@@ -29,7 +29,7 @@ export default function PassengerSummary({ passenger, seat, onSeatRemove, onMeal
               <X size={15} aria-hidden="true" />
             </button>
           </div>
-        ) : <span aria-label="No seat charge yet" className="text-sm text-slate-400">—</span>}
+        ) : <span aria-label="No seat charge yet" className="text-sm text-slate-500">—</span>}
       </div>
       <div className="mt-1 flex items-center justify-between gap-2">
         <p className="flex items-start gap-1.5 text-xs leading-5 text-slate-500">
@@ -46,7 +46,7 @@ export default function PassengerSummary({ passenger, seat, onSeatRemove, onMeal
               <X size={15} aria-hidden="true" />
             </button>
           </div>
-        ) : <span aria-label="No meal charge" className="text-sm text-slate-400">—</span>}
+        ) : <span aria-label="No meal charge" className="text-sm text-slate-500">—</span>}
       </div>
     </li>
   )

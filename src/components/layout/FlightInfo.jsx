@@ -8,7 +8,7 @@ export default function FlightInfo() {
           <p className="text-2xl font-semibold tracking-tight">BOM</p>
           <p className="mt-1 text-xs text-slate-500">Mumbai · 08:20</p>
         </div>
-        <div className="flex flex-col items-center gap-1.5 text-slate-400">
+        <div className="flex flex-col items-center gap-1.5 text-slate-600">
           <Plane size={19} aria-hidden="true" className="rotate-45" />
           <span className="h-px w-12 bg-slate-200 sm:w-20" />
           <span className="text-[10px] font-medium uppercase tracking-wider">Non-stop</span>

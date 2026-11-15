@@ -14,7 +14,7 @@ export default function BookingProgress({ isComplete }) {
             <span className={`flex size-6 items-center justify-center rounded-full text-xs font-semibold ${index === currentStep ? 'bg-teal-800 text-white' : index < currentStep ? 'bg-teal-100 text-teal-800' : 'border border-slate-300 text-slate-500'}`}>
               {index < currentStep ? <Check size={13} aria-label="Complete" /> : index + 1}
             </span>
-            <span className={`text-xs sm:text-sm ${index === currentStep ? 'font-semibold text-teal-900' : 'text-slate-500'}`}>{step}</span>
+            <span className={`text-xs sm:text-sm ${index === currentStep ? 'font-semibold text-teal-900' : 'text-slate-600'}`}>{step}</span>
           </li>
         ))}
       </ol>
