@@ -25,7 +25,7 @@ export default function AircraftSeatMap({ layout, onLayoutChange, activePassenge
         <SeatLegend />
       </div>
       <div className="px-3 pt-6 pb-7 sm:px-6">
-        {feedback && (
+        {feedback && feedback.scope !== 'meal' && (
           <p role={feedback.kind === 'error' ? 'alert' : 'status'} className={`mb-4 rounded-xl px-4 py-3 text-sm leading-6 ${feedback.kind === 'error' ? 'bg-red-50 text-red-800' : 'bg-teal-50 text-teal-900'}`}>
             {feedback.text}
           </p>

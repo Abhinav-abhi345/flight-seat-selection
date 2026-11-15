@@ -5,5 +5,6 @@ export function createPassenger(number) {
     id: `passenger-${number}`,
     name: `Passenger ${number}`,
     seatId: null,
+    mealId: null,
   }
 }

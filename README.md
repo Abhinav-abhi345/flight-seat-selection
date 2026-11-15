@@ -4,9 +4,11 @@ React and JavaScript frontend for the flight seat selection assessment.
 
 ## Current progress
 
-Phase 6: seat pricing. Includes the responsive airline interface, both aircraft layouts, passenger management, validated seat assignments, safe cabin changes, and a derived category-by-category price breakdown.
+Phase 7: bonus meal selection. Includes all mandatory seat-selection and pricing behavior, one optional meal per passenger, and a combined seat-and-meal price breakdown.
 
-Mandatory seat-selection and pricing functionality is implemented. Bonus meals, optional persistence, and final browser/deployment checks remain. This is a mock seat-selection experience: it does not perform a reservation or collect payment.
+Mandatory functionality and bonus meals are implemented. Final browser verification, GitHub publication, and Vercel deployment remain for Phase 8. This is a mock seat-selection experience: it does not perform a reservation or collect payment.
+
+Selections are held in memory and reset on page refresh. Optional localStorage persistence is intentionally omitted to keep the assessment focused on its requirements.
 
 ## Stack
 
@@ -47,13 +49,14 @@ npm.cmd run preview
 - `src/App.jsx`: composes the page from presentation components.
 - `src/main.jsx`: React entry point with StrictMode.
 - `src/index.css`: Tailwind import and base styles.
-- `src/components/`: layout, passenger, seat, and summary components. Meals will follow mandatory features.
-- `src/data/`: mock passenger and seat data, separate from presentation.
+- `src/components/`: layout, passenger, seat, meal, and summary components.
+- `src/data/`: mock passenger, aircraft, seat-category, and meal data, separate from presentation.
 - `src/hooks/usePassengers.js`: shared passenger/assignment state, cabin selection, and event handlers.
 - `src/utils/passengerHelpers.js`: pure passenger initialization and reducer logic, covered by Node tests.
 - `src/utils/seatSelection.js`: assignment, removal, and cabin-change transitions.
+- `src/utils/mealSelection.js`: independent meal selection and removal transitions.
 - `src/utils/validation.js`: latest-state validation of assignment attempts.
-- `src/utils/priceCalculator.js`: derived pricing lines, selection count, total charges, seat price lookup, and Indian rupee formatting.
+- `src/utils/priceCalculator.js`: separate seat and meal pricing calculations, combined total, selection counts, and Indian rupee formatting.
 
 Empty directories may not appear in Git until implementation adds files.
 
@@ -125,11 +128,27 @@ No dependencies were added for Phase 5. That phase's automated checks covered 19
 - The inactive Review placeholder was removed. Selection completion is shown as a status; no checkout or actual booking is implied.
 - There is no separate total state, synchronization effect, or pricing dependency. This small pure calculation runs during rendering, so a dedicated hook or memoization would add unnecessary indirection.
 
-No dependencies were added for Phase 6. Automated checks now include 26 tests. Browser appearance, keyboard interactions, responsive behavior, and browser console checks still require final manual verification.
+No dependencies were added for Phase 6. That phase's automated checks covered 26 tests.
+
+## Phase 7 implementation and verification
+
+- Select a passenger and use the optional meal panel below the cabin. Choose No meal, Fresh fruit bowl (₹0), Vegetarian meal (₹180), or Grilled chicken meal (₹250).
+- Each passenger stores one meal ID. Changing meals replaces the previous choice. No meal and a free meal are distinct: both cost ₹0, but only the latter counts as a selected meal.
+- The meal choices use native radio inputs with a labelled group, keyboard navigation, and visible focus styles. The No meal option is checked initially. Meals are never required to finish seat selection.
+- Meal names and charges appear in passenger cards and summary rows. Each summary row includes separate seat/meal removal controls and a combined passenger total.
+- Choose 1A + Vegetarian meal for Passenger 1 and 2A + Grilled chicken meal for Passenger 2. Expect seat charges ₹600, meal charges ₹430, total add-ons ₹1,030.
+- Change the Vegetarian meal to the free fruit bowl: total becomes ₹850. Remove Passenger 2's meal: total becomes ₹600, with both seats retained.
+- Switch passengers or cabins: meals remain selected, even when a cabin change clears a seat. Removing a seat preserves the meal; removing a meal preserves the seat.
+- Reduce passenger count: removed profiles' seats and meals disappear from pricing. Increasing it again creates profiles with no previous selections restored.
+- Meal feedback appears beside meal controls. Seat/count/cabin feedback remains in the cabin panel; there are no duplicate live announcements.
+- `mealSelection.js` handles meal updates independently from `seatSelection.js`. `calculateMealPricing` and `calculateSeatPricing` remain separate pure functions, composed by `calculateBookingPricing`.
+- No meal prices or independently mutable totals are stored in state. All displayed prices come from the catalogue and current passenger selections.
+
+No dependencies were added for Phase 7. There are 37 automated business-logic tests. Rendering checks cover skipped, free and paid meals, combined totals, and optional-meal completion behavior. Final browser appearance, keyboard interactions, responsive behavior, and browser console checks remain for Phase 8.
 
 ## State management
 
-`usePassengers` uses React's `useReducer` to keep the passenger list (including seat IDs), active passenger ID, aircraft layout ID, and action feedback together. The reducer validates each action against the latest state and changes related values atomically, so reducing the list cannot leave the active ID pointing at a removed passenger.
+`usePassengers` uses React's `useReducer` to keep the passenger list (including seat and meal IDs), active passenger ID, aircraft layout ID, and action feedback together. The reducer validates each action against the latest state and changes related values atomically, so reducing the list cannot leave the active ID pointing at a removed passenger.
 
 Passenger count comes from the list length. The active passenger object is found by ID. Neither is stored separately. Retained profiles keep their identifiers and existing data, and updates never mutate the previous state.
 

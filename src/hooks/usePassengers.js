@@ -15,5 +15,7 @@ export default function usePassengers() {
     changeLayout: (layoutId) => dispatch({ type: 'changeLayout', layoutId }),
     selectSeat: (seatId) => dispatch({ type: 'assignSeat', seatId, layoutId: state.layoutId }),
     removeSeat: (passengerId) => dispatch({ type: 'removeSeat', passengerId }),
+    selectMeal: (passengerId, mealId) => dispatch({ type: 'selectMeal', passengerId, mealId }),
+    removeMeal: (passengerId) => dispatch({ type: 'removeMeal', passengerId }),
   }
 }

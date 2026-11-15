@@ -1,4 +1,5 @@
 import { seatCategories } from '../data/seats.js'
+import { meals } from '../data/meals.js'
 
 const rupeeFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -40,4 +41,24 @@ export function calculateSeatPricing(passengers, seatsById) {
 
 export function formatPrice(amount) {
   return rupeeFormatter.format(amount)
+}
+
+export function calculateMealPricing(passengers) {
+  const mealLineItems = meals.map((meal) => {
+    const quantity = passengers.filter((passenger) => passenger.mealId === meal.id).length
+    return { id: meal.id, label: meal.name, unitPrice: meal.price, quantity, subtotal: quantity * meal.price }
+  }).filter((item) => item.quantity > 0)
+
+  return {
+    mealLineItems,
+    selectedMealCount: mealLineItems.reduce((count, item) => count + item.quantity, 0),
+    mealTotal: mealLineItems.reduce((total, item) => total + item.subtotal, 0),
+  }
+}
+
+export function calculateBookingPricing(passengers, seatsById) {
+  const seatPricing = calculateSeatPricing(passengers, seatsById)
+  const mealPricing = calculateMealPricing(passengers)
+
+  return { ...seatPricing, ...mealPricing, grandTotal: seatPricing.seatTotal + mealPricing.mealTotal }
 }

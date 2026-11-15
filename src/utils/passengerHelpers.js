@@ -1,6 +1,7 @@
 import { createPassenger, passengerLimits } from '../data/passengers.js'
 import { defaultLayoutId } from '../data/aircraftLayouts.js'
 import { assignSeat, changeLayout, removeSeat } from './seatSelection.js'
+import { removeMeal, selectMeal } from './mealSelection.js'
 
 function isValidCount(count) {
   return Number.isInteger(count) && count >= passengerLimits.min && count <= passengerLimits.max
@@ -18,6 +19,12 @@ export function createPassengerState(count = passengerLimits.initial) {
 
 export function passengerReducer(state, action) {
   switch (action.type) {
+    case 'selectMeal':
+      return selectMeal(state, action.passengerId, action.mealId)
+
+    case 'removeMeal':
+      return removeMeal(state, action.passengerId)
+
     case 'assignSeat':
       return assignSeat(state, action)
 

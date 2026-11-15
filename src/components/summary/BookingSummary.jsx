@@ -2,7 +2,7 @@ import { ArrowRight, CircleCheck, Ticket } from 'lucide-react'
 import PassengerSummary from './PassengerSummary'
 import PriceBreakdown from './PriceBreakdown'
 
-export default function BookingSummary({ passengers, seatsById, onSeatRemove, pricing }) {
+export default function BookingSummary({ passengers, seatsById, onSeatRemove, onMealRemove, pricing }) {
   const { selectedCount } = pricing
   const isComplete = selectedCount === passengers.length
 
@@ -17,18 +17,19 @@ export default function BookingSummary({ passengers, seatsById, onSeatRemove, pr
         <p className="mt-1 text-xs text-slate-500">20 Nov · AE 204 · {passengers.length} traveller{passengers.length === 1 ? '' : 's'}</p>
       </div>
       <div className="mt-5 flex items-center justify-between gap-2">
-        <h3 className="eyebrow">SEAT SELECTION</h3>
-        <span className="text-xs text-slate-500">{selectedCount} of {passengers.length} selected</span>
+        <h3 className="eyebrow">YOUR SELECTIONS</h3>
+        <span className="text-xs text-slate-500">{selectedCount} of {passengers.length} seats</span>
       </div>
+      <p className="mt-2 text-[11px] text-slate-500">{pricing.selectedMealCount} meal{pricing.selectedMealCount === 1 ? '' : 's'} selected · Optional</p>
       <ul className="mt-1 divide-y divide-slate-100">
-        {passengers.map((passenger) => <PassengerSummary key={passenger.id} passenger={passenger} seat={seatsById[passenger.seatId]} onSeatRemove={onSeatRemove} />)}
+        {passengers.map((passenger) => <PassengerSummary key={passenger.id} passenger={passenger} seat={seatsById[passenger.seatId]} onSeatRemove={onSeatRemove} onMealRemove={onMealRemove} />)}
       </ul>
       <div className="pt-3"><PriceBreakdown pricing={pricing} /></div>
       <div role="status" className={`mt-5 rounded-xl px-4 py-3 text-center text-xs leading-5 ${isComplete ? 'bg-teal-50 text-teal-900' : 'border border-dashed border-slate-200 text-slate-500'}`}>
         {isComplete ? (
           <>
             <p className="flex items-center justify-center gap-2 font-semibold"><CircleCheck size={16} aria-hidden="true" />All seats selected</p>
-            <p className="mt-1">You can change or remove seats at any time.</p>
+            <p className="mt-1">Meals are optional. You can still change your selections.</p>
           </>
         ) : selectedCount === 0 ? 'Choose a seat for each passenger to complete your selection.' : `${passengers.length - selectedCount} more seat${passengers.length - selectedCount === 1 ? '' : 's'} to choose.`}
       </div>

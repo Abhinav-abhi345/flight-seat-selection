@@ -1,11 +1,12 @@
 import { getSeatLookup } from './utils/seatHelpers'
-import { calculateSeatPricing } from './utils/priceCalculator'
+import { calculateBookingPricing } from './utils/priceCalculator'
 import Header from './components/layout/Header'
 import FlightInfo from './components/layout/FlightInfo'
 import BookingProgress from './components/layout/BookingProgress'
 import PassengerSelector from './components/passengers/PassengerSelector'
 import AircraftSeatMap from './components/seats/AircraftSeatMap'
 import BookingSummary from './components/summary/BookingSummary'
+import MealSelector from './components/meals/MealSelector'
 import usePassengers from './hooks/usePassengers'
 import { aircraftLayouts } from './data/aircraftLayouts'
 
@@ -16,6 +17,8 @@ export default function App() {
     changeLayout,
     selectSeat,
     removeSeat,
+    selectMeal,
+    removeMeal,
     activePassenger,
     activePassengerId,
     feedback,
@@ -24,7 +27,7 @@ export default function App() {
   } = usePassengers()
   const layout = aircraftLayouts[layoutId]
   const seatsById = getSeatLookup(layout)
-  const pricing = calculateSeatPricing(passengers, seatsById)
+  const pricing = calculateBookingPricing(passengers, seatsById)
 
   return (
     <>
@@ -50,16 +53,19 @@ export default function App() {
             onCountChange={changePassengerCount}
             seatsById={seatsById}
           />
-          <AircraftSeatMap
-            layout={layout}
-            onLayoutChange={changeLayout}
-            activePassenger={activePassenger}
-            passengers={passengers}
-            onSeatSelect={selectSeat}
-            onSeatRemove={removeSeat}
-            feedback={feedback}
-          />
-          <BookingSummary passengers={passengers} seatsById={seatsById} onSeatRemove={removeSeat} pricing={pricing} />
+          <div className="min-w-0 space-y-5">
+            <AircraftSeatMap
+              layout={layout}
+              onLayoutChange={changeLayout}
+              activePassenger={activePassenger}
+              passengers={passengers}
+              onSeatSelect={selectSeat}
+              onSeatRemove={removeSeat}
+              feedback={feedback}
+            />
+            <MealSelector passenger={activePassenger} onMealSelect={selectMeal} onMealRemove={removeMeal} feedback={feedback} />
+          </div>
+          <BookingSummary passengers={passengers} seatsById={seatsById} onSeatRemove={removeSeat} onMealRemove={removeMeal} pricing={pricing} />
         </div>
         <p className="mt-7 text-center text-xs leading-5 text-slate-500">
           A mock flight experience. No payment or actual reservation is made.

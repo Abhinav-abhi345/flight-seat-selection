@@ -1,7 +1,10 @@
-import { Armchair } from 'lucide-react'
+import { Armchair, Utensils } from 'lucide-react'
 import { formatPrice, getSeatPrice } from '../../utils/priceCalculator'
+import { getMealById } from '../../data/meals'
 
 export default function PassengerCard({ passenger, number, isActive, onSelect, seat }) {
+  const meal = getMealById(passenger.mealId)
+
   return (
     <button
       type="button"
@@ -20,6 +23,11 @@ export default function PassengerCard({ passenger, number, isActive, onSelect, s
         <Armchair size={14} aria-hidden="true" />
         {passenger.seatId ?? 'No seat selected'}
         {seat && <span className="ml-auto font-medium text-teal-900">{formatPrice(getSeatPrice(seat))}</span>}
+      </span>
+      <span className="mt-2 flex items-start gap-1.5 text-xs leading-5 text-slate-500">
+        <Utensils size={13} className="mt-0.5 shrink-0" aria-hidden="true" />
+        <span>{meal?.name ?? 'Meal optional'}</span>
+        {meal && <span className="ml-auto shrink-0 font-medium text-teal-900">{formatPrice(meal.price)}</span>}
       </span>
     </button>
   )
